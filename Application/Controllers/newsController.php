@@ -1,93 +1,151 @@
 <?php
 
 namespace Application\Controllers;
-use Application\Controllers\appController;
-use Application\Models\Configuration\Shortcut;
+
 use Application\Models\News\ArticleDb;
+use Application\Models\News\CategorieDb;
 
-class newsController extends appController {
+// -- Utilisation de Idiorm
+use Application\Models\Db\DBFactory;
+use Application\Models\Db\ORM;
 
-    // -- Utilisation de Shortcut;
-    use Shortcut;
-
-    // -- Page d'accueil
+class newsController extends \Application\Controllers\appController {
+    
     public function index() {
-
-        // -- Connexion Ã  la BDD
-        $ArticleDb = new ArticleDb;
-
-        // -- RÃ©cupÃ©ration des Articles de la CatÃ©gorie
+    
+        // -- Connexion à la BDD
+        $ArticleDb = new ArticleDb();
+        
+        // -- Récupération des Articles
         $articles  = $ArticleDb->fetchAll();
-        $spotlight = $ArticleDb->fetchAll('SPOTLIGHTARTICLE = 1');
-
-        // -- Include de la Vue
-        $this->setTITRE("TechNews - Technology Magazine");
-        $this->render('news/index',['articles' => $articles, 'categorie' => 'Accueil', 'spotlight' => $spotlight]);
+        
+        $where = 'SPOTLIGHTARTICLE = 1';
+        $spotlight = $ArticleDb->fetchAll($where);
+        
+        $this->render('news/index', ['articles' => $articles, 'spotlight' => $spotlight]);
     }
-
-    // -- Page Business
+    
     public function business() {
-
-        // -- Connexion Ã  la BDD
-        $ArticleDb = new ArticleDb;
-
-        // -- RÃ©cupÃ©ration des Articles de la CatÃ©gorie
-        $where = 'IDCATEGORIE = 2';
-        $articles = $ArticleDb->fetchAll($where);
-
-        // -- Include de la Vue
-        $this->setTITRE("TechNews | Business");
-        $this->render('news/category', ['articles' => $articles, 'categorie' => 'Business']);
+        // ----------------------------- PREMIERE METHODE ----------------------------- //
+        
+            // -- Connexion à la BDD
+            $ArticleDb = new ArticleDb();
+            $articles  = $ArticleDb->fetchAll('IDCATEGORIE = 2');
+        
+        // ----------------------------- DEUXIEME METHODE ----------------------------- //
+        
+            $articles = $this->getArticlesbyCategory(ucfirst(__FUNCTION__));
+            
+        // -- Affichage dans la Vue
+        $this->render('news/categorie', ['articles' => $articles]);
+        
     }
-
-    // -- Page Computing
+    
     public function computing() {
-        // -- Connexion Ã  la BDD
-        $ArticleDb = new ArticleDb;
-
-        // -- RÃ©cupÃ©ration des Articles de la CatÃ©gorie
-        $where = 'IDCATEGORIE = 3';
-        $articles = $ArticleDb->fetchAll($where);
-
-        // -- Include de la Vue
-        $this->setTITRE("TechNews | Computing");
-        $this->render('news/category', ['articles' => $articles, 'categorie' => 'Computing']);
+        // -- Connexion à la BDD
+        $ArticleDb = new ArticleDb();
+        $articles  = $ArticleDb->fetchAll('IDCATEGORIE = 3');
+        // -- Affichage dans la Vue
+        $this->render('news/categorie', ['articles' => $articles]);
     }
-
-    // -- Page Tech
+    
     public function tech() {
-        // -- Connexion Ã  la BDD
-        $ArticleDb = new ArticleDb;
-
-        // -- RÃ©cupÃ©ration des Articles de la CatÃ©gorie
-        $where = 'IDCATEGORIE = 4';
-        $articles = $ArticleDb->fetchAll($where);
-
-        // -- Include de la Vue
-        $this->setTITRE("TechNews | Tech");
-        $this->render('news/category', ['articles' => $articles, 'categorie' => 'Tech']);
+        // -- Connexion à la BDD
+        $ArticleDb = new ArticleDb();
+        $articles  = $ArticleDb->fetchAll('IDCATEGORIE = 4');
+        // -- Affichage dans la Vue
+        $this->render('news/categorie', ['articles' => $articles]);
     }
+    
+    private function getArticlesbyCategory($LIBELLECATEGORIE) {
+        $CategorieDb = new CategorieDb();
+        $ArticleDb   = new ArticleDb();
+        
+        $Categorie = $CategorieDb->fetchOne($LIBELLECATEGORIE, 'LIBELLECATEGORIE');
+        return $ArticleDb->fetchAll('IDCATEGORIE = '.$Categorie->getIDCATEGORIE());
+    }
+    
+    /**
+     * Test de Fonctionnement de IDIORM
+     */
+    public function idiorm() {
+        
+        // -- Initialisation de la Connexion à la BDD
+        DBFactory::start();
+        
+        // -- Quelques tests de requètes
+        
+            // -- Afficher les Catégories
+            //$categories = ORM::for_table('categorie')->find_result_set();
+            //print_r($categories);
+        
+            //foreach ($categories as $categorie) {
+            //    echo $categorie->LIBELLECATEGORIE.'<br>';
+            //}
+            
+            // -- Afficher les Auteurs dans un Tableau
+            $auteurs = ORM::for_table('auteur')->find_result_set();
+            //print_r($auteurs);
+            echo '<table border="1">';
+                    
+                    foreach ($auteurs as $auteur) {
 
-    // -- Page Article
+                        echo '<tr>';
+                            echo '<td>'.$auteur->IDAUTEUR.'</td>';
+                            echo '<td>'.$auteur->PRENOMAUTEUR.'</td>';
+                            echo '<td>'.$auteur->NOMAUTEUR.'</td>';
+                            echo '<td>'.$auteur->EMAILAUTEUR.'</td>';
+                        echo '</tr>';
+                    }
+                
+            echo '</table>';
+        
+    }
+    
+    /**
+     * Vue qui permet l'affichage d'un article en particulier
+     */
     public function article() {
-        // -- Connexion Ã  la BDD
-        $ArticleDb = new ArticleDb;
-
-       // -- RÃ©cupÃ©ration de l'article
-       $idarticle = $_GET['idarticle'];
-       $article = $ArticleDb->fetchOne($idarticle, 'IDARTICLE');
-
-       // -- RÃ©cupÃ©ration de 3 suggestions d'article de la meme catÃ©gorie
-
-       $where   = 'IDCATEGORIE = '.$article->getIDCATEGORIE();
-       $orderby = 'IDARTICLE DESC';
-       $limit   = 3;
-
-       $suggestions = $ArticleDb->fetchAll($where, $orderby, $limit);
-
-        // -- Include de la Vue
-        $this->setTITRE("TechNews | Tech");
-        $this->render('news/article', ['article' => $article, 'suggestions' => $suggestions]);
+        
+        // -- Connexion à la BDD
+        DBFactory::start();
+        
+        // -- Récupération de l'Article
+        // print_r($_GET);
+        
+        // -- Avec IDIORM
+        $article        = ORM::for_table('view_articles')->find_one($_GET['idarticle']);
+        $tags           = ORM::for_table('view_tags')->where('IDARTICLE', $_GET['idarticle'])->find_result_set();
+        $suggestions    = ORM::for_table('view_articles')->where('IDCATEGORIE', $article->IDCATEGORIE)->limit(4)->find_result_set();
+        
+        // -- Avec ArticleDB
+        # : $article = $ArticleDb->fetchOne($idarticle, 'IDARTICLE');
+        //print_r($article);
+       
+        $this->render('news/article', ['article' => $article, 'tags' => $tags, 'suggestions' => $suggestions]);
+        
     }
-
+    
 }
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

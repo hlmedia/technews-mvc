@@ -1,44 +1,55 @@
 <?php
 
-namespace Application\Controllers;
+namespace Application\Controllers; 
 
 class frontController extends \Application\Controllers\appController {
-
-    public function __construct($params) {
-        //print_r($params);
+    
+    public function run($params) {
         
+        //print_r($params);
         if(empty($params)) {
-            $params['controller'] = 'news';
-            $params['action'] = 'index';
+            $params['controller']   = 'news';
+            $params['action']       = 'index';
         }
-
-        // -- RÃ©cupÃ©ration des paramÃ¨tres
-        $controller = 'Application\Controllers\\'.$params['controller'].'Controller';
-        $action     = $params['action'];
-
-        // -- Tentative de branchement
-        $controllerFile = RACINE_SITE.'\\'.$controller.'.php';
-        if( file_exists($controllerFile) ) {
-
-            // -- CrÃ©ation d'un Objet du Controller
+        
+        // -- Récupération des paramètres
+        $controller = 'Application\Controllers\\'.$params['controller'].'Controller'; // = newsController
+        $action     = $params['action']; // = business
+        
+        // -- On Vérifie si le fichier du controleur existe avant de l'instancier.
+        if( file_exists(RACINE_SITE.'\\'.$controller.'.php') ) {
+        
             $obj = new $controller;
-
-            // -- VÃ©rification de l'existance de l'action
-            if( method_exists($obj, $action) ){
+        
+            // -- Si la méthode existe dans mon controleur, alors je peux executer mon action.
+            if( method_exists($obj, $action) ) {
                 
-                    // -- Execution de l'action
-                    $obj->$action();
-            
+                // -- Execution de mon action.
+                $obj->$action();
+                
             } else {
-                // -- Redirection 404 si la vue n'existe pas.
-                $this->render('errors/404', 'Aucune Vue Correspondante');
+                
+                // -- Sinon, la méthode n'existe pas, donc je renvoi une erreur 404.
+                $this->render('errors/404', ['erreur' => 'Aucune vue correspondante']);
+                
             }
-
+        
         } else {
-            // -- Redirection 404 si le controlleur n'existe pas.
-            $this->render('errors/404','Aucun Controleur correspondant.');
+            
+            // -- Sinon, le fichier du controleur n'existe pas, donc je renvoi une erreur 404.
+            $this->render('errors/404', ['erreur' => 'Aucun controleur correspondant']);
+            
         }
+        
         
     }
-
+    
 }
+
+
+
+
+
+
+
+

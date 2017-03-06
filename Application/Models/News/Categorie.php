@@ -1,27 +1,38 @@
 <?php
-
 namespace Application\Models\News;
 
 class Categorie
 {
-    
     private $IDCATEGORIE,
-        $LIBELLECATEGORIE,
-        $ROUTECATEGORIE;
-
-    public function __construct() {}
-
-    // -- Getters
-    public function getIDCATEGORIE() {
+            $LIBELLECATEGORIE,
+            $ROUTECATEGORIE;
+    
+            
+    /**
+     * @return the $IDCATEGORIE
+     */
+    public function getIDCATEGORIE()
+    {
         return $this->IDCATEGORIE;
     }
 
-    public function getLIBELLECATEGORIE() {
+    /**
+     * @return the $LIBELLECATEGORIE
+     */
+    public function getLIBELLECATEGORIE()
+    {
         return $this->LIBELLECATEGORIE;
     }
 
-    public function getROUTECATEGORIE() {
+    /**
+     * @return the $ROUTECATEGORIE
+     */
+    public function getROUTECATEGORIE()
+    {
         return $this->ROUTECATEGORIE;
     }
 
+    
+    
 }
+

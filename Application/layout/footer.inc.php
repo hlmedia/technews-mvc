@@ -1,4 +1,5 @@
-    </div> 
+</div>
+        </div>
         <!--footer-->
         <footer class="footer">
             <div class="container">
@@ -6,36 +7,33 @@
                     <div class="col-md-4  col-sm-4 col-xs-12">
                         <div class="about">
                             <a href="#" class="logo">
-                                <img alt="" src="<?= SITE_URL ?>/public/images/logo_footer.png" />
+                                <img alt="" src="<?= PUBLIC_URL ?>/images/logo_footer.png" />
                             </a>
-                            <p><?= $Configuration->CNIL_SITE; ?></p>
+                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form</p>
                         </div>
                     </div>
                     <div class="col-md-3 col-md-offset-1 col-sm-4 col-xs-12">
                         <h3>NOS CATEGORIES</h3>
                         <ul class="list-category">
-                             <?php
-                                foreach ($categories as $categorie) :
-                            ?>
-
-                                <li><a href="<?= SITE_URL ?>/public/<?= $categorie->getROUTECATEGORIE(); ?>"><?= $categorie->getLIBELLECATEGORIE(); ?></a></li>
-
-                            <?php endforeach; ?>
+                            <?php foreach($categories as $categorie) : ?>
+                				<li><a href="<?= PUBLIC_URL.'/'.$categorie->getROUTECATEGORIE(); ?>"><?= $categorie->getLIBELLECATEGORIE(); ?></a></li>
+                			<?php endforeach; ?>
                         </ul>
                     </div>
                     <div class="col-md-3 col-md-offset-1 col-sm-4 col-xs-12">
                         <h3>RECHERCHE PAR TAGS</h3>
 
                         <div class="list-tags">
-
-                            <?php
-                                $tags = $this->getTags();
-                                foreach($tags as $tag) :
-                            ?>
-
-                                <a href="#"><?= $tag->getLIBELLETAGS(); ?></a>
-
-                            <?php endforeach; ?>
+                            <a href="#">iPhone 7</a>
+                            <a href="#">News</a>
+                            <a href="#">Sport</a>
+                            <a href="#">Apple</a>
+                            <a href="#">Alcatel</a>
+                            <a href="#">Pixi 4</a>
+                            <a href="#">Elon Musk </a>
+                            <a href="#">Smart phone</a>
+                            <a href="#">Nexus</a>
+                            <a href="#">Canvas</a>
 
                         </div>
                     </div>
@@ -44,7 +42,7 @@
                 <div class="allright">
                     <div class="row">
                         <div class="col-sm-6 col-xs-12">
-                            <p> © 2017 <a href="#"><?= $Configuration->NOM_SITE; ?></a>. All rights reserved.</p>
+                            <p> © 2017 <a href="#">TECH NEWS</a>. All rights reserved.</p>
                         </div>
 
                         <div class="col-sm-6 col-xs-12">
@@ -87,9 +85,10 @@
         </footer>
     </div>
     <!--scrip file-->
-    <script src="<?= SITE_URL ?>/public/js/jquery.min.js"></script>
-    <script src="<?= SITE_URL ?>/public/js/bootstrap.js"></script>
-    <script src="<?= SITE_URL ?>/public/js/owl.carousel.min.js"></script>
-    <script src="<?= SITE_URL ?>/public/js/main.js"></script>
+    <script src="<?= PUBLIC_URL ?>/js/jquery.min.js"></script>
+    <script src="<?= PUBLIC_URL ?>/js/bootstrap.js"></script>
+    <script src="<?= PUBLIC_URL ?>/js/owl.carousel.min.js"></script>
+    <script src="<?= PUBLIC_URL ?>/js/main.js"></script>
 </body>
+</html>
 </html>

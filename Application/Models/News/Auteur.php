@@ -1,38 +1,59 @@
 <?php
-
 namespace Application\Models\News;
 
 class Auteur
 {
-    
-    // -- Définition des Variables
     private $IDAUTEUR,
-        $NOMAUTEUR,
-        $PRENOMAUTEUR,
-        $EMAILAUTEUR;
-
-    // -- Constructeur
-    public function __construct() {}
-
+            $NOMAUTEUR,
+            $PRENOMAUTEUR,
+            $EMAILAUTEUR;
+    
     // -- Getters
-    public function getIDAUTEUR() {
+
+    /**
+     * @return the $IDAUTEUR
+     */
+    public function getIDAUTEUR()
+    {
         return $this->IDAUTEUR;
     }
 
-    public function getNOMAUTEUR() {
+    /**
+     * @return the $NOMAUTEUR
+     */
+    public function getNOMAUTEUR()
+    {
         return $this->NOMAUTEUR;
     }
 
-    public function getPRENOMAUTEUR() {
+    /**
+     * @return the $PRENOMAUTEUR
+     */
+    public function getPRENOMAUTEUR()
+    {
         return $this->PRENOMAUTEUR;
     }
 
-    public function getEMAILAUTEUR() {
+    /**
+     * @return the $EMAILAUTEUR
+     */
+    public function getEMAILAUTEUR()
+    {
         return $this->EMAILAUTEUR;
     }
-
+    
     public function getNOMCOMPLET() {
-        return $this->PRENOMAUTEUR.' '.$this->NOMAUTEUR;
+        return $this->getPRENOMAUTEUR().' '.$this->getNOMAUTEUR();
     }
-
+    
 }
+
+
+
+
+
+
+
+
+
+

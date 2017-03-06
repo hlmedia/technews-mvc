@@ -4,29 +4,55 @@
 session_start();
 
 # Affichage des Errors DEV
-ini_set("display_errors", 1); 
+ini_set("display_errors", 1);
 
-# Racine du site Internet
-# NÃ©cessite PHP 7.0 +
+# Racine du Site Internet
+# Nécessite PHP 7+
 define('RACINE_SITE', dirname(__FILE__, 2));
 
-#URL Relative du site
-define('SITE_URL', '/POO/technews');
+# Chemin Relatif vers le Site Internet
+define('SITE_URL', '/TechNews');
+
+# Chemin Relatif vers le Dossier Public
+define('PUBLIC_URL', '/TechNews/public');
 
 # En-tete du site
-define('HEADER_SITE', RACINE_SITE.'/Application/layout/header.inc.php');
+define('HEADER_SITE', RACINE_SITE.'/Application/Layout/header.inc.php');
 
 # Pied de page du site
-define('FOOTER_SITE', RACINE_SITE.'/Application/layout/footer.inc.php');
+define('FOOTER_SITE', RACINE_SITE.'/Application/Layout/footer.inc.php');
 
-# Barre Lateral
-define('SIDEBAR_SITE', RACINE_SITE.'/Application/layout/sidebar.inc.php');
+# Pied de page du site
+define('SIDEBAR_SITE', RACINE_SITE.'/Application/Layout/sidebar.inc.php');
 
 # Les Vues
-define('VIEW_SITE', RACINE_SITE.'/Application/views');
+define('VIEW_SITE', RACINE_SITE.'/Application/Views');
+
+# Langue
+define('LANGUE_SITE', 'EN_en');
+
+# Connexion BDD
+define('DBHOST', 'localhost');
+define('DBNAME', 'news');
+define('DBUSERNAME', 'root');
+define('DBPASSWORD', '');
 
 # Autoloader
-require_once'Autoloader.php';
+require_once 'Autoloader.php';
 Autoloader::register();
 
-?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
